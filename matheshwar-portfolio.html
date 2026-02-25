@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matheshwar G V – Software Developer & AI Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #1a1d26;
+    --border: #222535;
+    --accent: #4fffb0;
+    --accent2: #7c6fff;
+    --text: #e8eaf0;
+    --muted: #7a7f96;
+    --glow: 0 0 40px rgba(79,255,176,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* Grid background */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(rgba(79,255,176,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(79,255,176,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0 60px;
+    position: relative;
+  }
+
+  .hero-inner {
+    width: 100%;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(79,255,176,0.08);
+    border: 1px solid rgba(79,255,176,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 8vw, 84px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .headline {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-bottom: 28px;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+
+  .headline span {
+    color: var(--accent2);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: #9aa0bc;
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s 0.3s ease both;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    animation: fadeDown 0.7s 0.4s ease both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    border-radius: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0c10;
+  }
+
+  .btn-primary:hover {
+    background: #6fffc2;
+    box-shadow: 0 0 30px rgba(79,255,176,0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    animation: fadeDown 1s 0.8s ease both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15;
+    margin-bottom: 40px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ─── ABOUT ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 16px;
+    color: #9aa0bc;
+    line-height: 1.85;
+    margin-bottom: 16px;
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(79,255,176,0.3);
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* ─── SKILLS ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.25s ease;
+    cursor: default;
+  }
+
+  .skill-card:hover {
+    border-color: rgba(79,255,176,0.4);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: var(--glow);
+  }
+
+  .skill-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(79,255,176,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .skill-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .skill-type {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── EXPERIENCE ─── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    opacity: 0.3;
+  }
+
+  .timeline-item {
+    padding: 0 0 44px 36px;
+    position: relative;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -5px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(79,255,176,0.5);
+  }
+
+  .timeline-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .timeline-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .timeline-org {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .timeline-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .timeline-points li {
+    font-size: 14px;
+    color: #9aa0bc;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  .timeline-points li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── PROJECTS ─── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(79,255,176,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(79,255,176,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    background: rgba(79,255,176,0.08);
+    border: 1px solid rgba(79,255,176,0.15);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .project-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: #9aa0bc;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .project-tech {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tech-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+
+  /* ─── CERTS ─── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: all 0.2s;
+  }
+
+  .cert-card:hover {
+    border-color: rgba(124,111,255,0.4);
+    transform: translateY(-1px);
+  }
+
+  .cert-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(124,111,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .cert-issuer {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── OBJECTIVE ─── */
+  .objective-box {
+    background: linear-gradient(135deg, rgba(79,255,176,0.06) 0%, rgba(124,111,255,0.06) 100%);
+    border: 1px solid rgba(79,255,176,0.2);
+    border-radius: 14px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .objective-box::after {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 180px;
+    color: rgba(79,255,176,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .objective-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #c8ccdc;
+    position: relative;
+    z-index: 1;
+  }
+
+  .objective-text strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    text-align: center;
+    padding: 80px 0 100px;
+  }
+
+  .cta-section .section-label {
+    justify-content: center;
+  }
+
+  .cta-section .section-label::after {
+    display: none;
+  }
+
+  .cta-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+
+  .cta-email {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(79,255,176,0.3);
+    transition: border-color 0.2s;
+    padding-bottom: 2px;
+  }
+
+  .cta-email:hover {
+    border-color: var(--accent);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+    animation: revealUp 0.8s ease both;
+  }
+
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-stats { flex-direction: row; flex-wrap: wrap; }
+    .stat-card { flex: 1; min-width: 120px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Open to Opportunities · 2025
+      </div>
+      <h1>Matheshwar<br><em>G V</em></h1>
+      <div class="headline">
+        <span>Software Developer</span> · AI & Automation Engineer · IT Student
+      </div>
+      <p class="hero-desc">
+        Building intelligent systems at the intersection of Python, Cloud, and Generative AI. 
+        IEEE member with hands-on internship experience and a passion for automation-driven solutions.
+      </p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Let's Connect →</a>
+        <a href="#projects" class="btn btn-outline">View Projects</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      SCROLL
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">01 · About</div>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm <strong>Matheshwar G V</strong>, a third-year B.Tech Information Technology student at Panimalar Engineering College, Kanchipuram — driven by a deep interest in software development and emerging AI technologies.</p>
+        <p>Through two focused internships, I've moved from <strong>Python fundamentals and backend systems</strong> to <strong>Generative AI concepts and workflow automation</strong> using tools like n8n and Figma integration. I don't just learn — I build real things that solve real problems.</p>
+        <p>As an active <strong>IEEE member</strong>, I've taken on leadership roles in technical event coordination, combining technical depth with collaborative teamwork.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Industry Internships</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">IEEE</div>
+          <div class="stat-label">Active Member & Leader</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">02 · Skills</div>
+    <h2 class="section-title">Technical Stack</h2>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-icon">🐍</div>
+        <div>
+          <div class="skill-name">Python</div>
+          <div class="skill-type">Core Language</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">☕</div>
+        <div>
+          <div class="skill-name">Java</div>
+          <div class="skill-type">OOP & Backend</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🗄️</div>
+        <div>
+          <div class="skill-name">SQL</div>
+          <div class="skill-type">Database Management</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">☁️</div>
+        <div>
+          <div class="skill-name">Cloud (AWS)</div>
+          <div class="skill-type">Infrastructure</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔁</div>
+        <div>
+          <div class="skill-name">n8n Automation</div>
+          <div class="skill-type">Workflow Automation</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div>
+          <div class="skill-name">Generative AI</div>
+          <div class="skill-type">AI Fundamentals</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📐</div>
+        <div>
+          <div class="skill-name">OOP Principles</div>
+          <div class="skill-type">Design Patterns</div>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">⚙️</div>
+        <div>
+          <div class="skill-name">Data Structures</div>
+          <div class="skill-type">Algorithms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">03 · Experience</div>
+    <h2 class="section-title">Internships</h2>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2025</div>
+        <div class="timeline-title">Gen AI & Automation Intern</div>
+        <div class="timeline-org">NICS Tech</div>
+        <ul class="timeline-points">
+          <li>Explored Generative AI concepts and applied them to real-world use cases and automation scenarios</li>
+          <li>Built and deployed n8n workflow automations, integrating with tools including Figma</li>
+          <li>Understood end-to-end AI-driven automation pipelines and their practical implementation</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2024</div>
+        <div class="timeline-title">Python Development Intern</div>
+        <div class="timeline-org">Octanet Services Pvt Ltd</div>
+        <ul class="timeline-points">
+          <li>Developed Python applications leveraging OOP principles and efficient data structures</li>
+          <li>Implemented backend functionality and database operations for production-level features</li>
+          <li>Debugged and optimized code for improved performance and reliability</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">04 · Projects</div>
+    <h2 class="section-title">What I've Built</h2>
+    <div class="projects-grid reveal">
+      <div class="project-card">
+        <div class="project-tag">Python · System Design</div>
+        <div class="project-name">Smart Parking System</div>
+        <p class="project-desc">
+          A full parking management system with vehicle authentication at its core. Features intelligent slot allocation algorithms, real-time validation logic, and a structured backend that mirrors production-level parking infrastructure.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">OOP</span>
+          <span class="tech-tag">Database</span>
+          <span class="tech-tag">Authentication</span>
+        </div>
+        <div style="margin-top: 20px;">
+          <a href="https://github.com/math2006gana-gif/smart-parking-system" target="_blank" class="btn btn-outline" style="font-size:13px; padding: 9px 18px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-tag">Python · Security</div>
+        <div class="project-name">Future Voting System</div>
+        <p class="project-desc">
+          A secure digital voting platform designed for integrity and trust. Implements multi-layer login and voter verification, tamper-resistant data storage, and audit-ready database architecture for secure electoral processes.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">SQL</span>
+          <span class="tech-tag">Security</span>
+          <span class="tech-tag">Verification</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-label">05 · Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="certs-grid reveal">
+      <div class="cert-card">
+        <div class="cert-icon">🏆</div>
+        <div>
+          <div class="cert-name">Python (A+ Grade)</div>
+          <div class="cert-issuer">Apollo Computer Education Ltd.</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🐍</div>
+        <div>
+          <div class="cert-name">Python Programming</div>
+          <div class="cert-issuer">CADD Point</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🤖</div>
+        <div>
+          <div class="cert-name">Claude 101</div>
+          <div class="cert-issuer">Anthropic</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">☁️</div>
+        <div>
+          <div class="cert-name">AWS Cloud Practitioner 101</div>
+          <div class="cert-issuer">Amazon Web Services</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🗄️</div>
+        <div>
+          <div class="cert-name">SQL Fundamentals</div>
+          <div class="cert-issuer">Sololearn</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">☕</div>
+        <div>
+          <div class="cert-name">Java Programming</div>
+          <div class="cert-issuer">QSpiders</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTIVE -->
+<section id="objective">
+  <div class="container">
+    <div class="section-label">06 · Career Objective</div>
+    <h2 class="section-title">Where I'm Headed</h2>
+    <div class="objective-box reveal">
+      <p class="objective-text">
+        I'm seeking an entry-level role as a <strong>Software Developer</strong> or <strong>AI Engineer</strong> where I can apply my Python, Java, SQL, and Cloud skills to build scalable and intelligent systems. Having worked on real-world automation and Gen AI projects during my internships, I bring both <strong>technical hands-on experience</strong> and an eagerness to grow in fast-moving engineering teams. My goal is to contribute meaningfully from day one while continuing to push the boundary of what automation and AI can accomplish.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="container">
+    <div class="section-label">07 · Contact</div>
+    <h2>Let's Build Something</h2>
+    <p>Open to internships, entry-level roles, and collaborative projects in software development and AI.</p>
+    <div class="cta-row" style="justify-content:center; margin-bottom: 24px;">
+      <a href="/cdn-cgi/l/email-protection#630e02170b06100b140211041523040e020a0f4d000c0e" class="btn btn-primary">Get In Touch →</a>
+      <a href="https://linkedin.com/in/matheshwargv" target="_blank" class="btn btn-outline">LinkedIn Profile</a>
+    </div>
+    <p style="font-size:13px; color: var(--muted);">📍 Kanchipuram, Tamil Nadu &nbsp;·&nbsp; B.Tech IT · 2023–2027</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span>© 2025 Matheshwar G V</span>
+      <span>Software Developer · AI Engineer · IEEE Member</span>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // All sections visible
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = 
